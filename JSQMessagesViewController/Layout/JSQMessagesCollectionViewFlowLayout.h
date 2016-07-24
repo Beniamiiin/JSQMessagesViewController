@@ -105,6 +105,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIFont *messageBubbleFont;
 
 /**
+ *  The font used to display the body a text time message in the message bubble of each
+ *  `JSQMessagesCollectionViewCell` in the collectionView.
+ *
+ *  @discussion The default value is the preferred system font for `UIFontTextStyleBody`. This value must not be `nil`.
+ */
+@property (strong, nonatomic) UIFont *messageTimeBubbleFont;
+
+/**
  *  The horizontal spacing used to lay out the `messageBubbleContainerView` frame within each `JSQMessagesCollectionViewCell`.
  *  This container view holds the message bubble image and message contents of a cell.
  *

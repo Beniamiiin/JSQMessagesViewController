@@ -18,13 +18,15 @@
 
 #import "DemoMessagesViewController.h"
 
+#import "NSDate+JSQFormatting.h"
+
 @implementation DemoMessagesViewController
 
 #pragma mark - View lifecycle
 
 /**
  *  Override point for customization.
- *
+ x*
  *  Customize your view.
  *  Look at the properties on `JSQMessagesViewController` and `JSQMessagesCollectionView` to see what is possible.
  *
@@ -561,6 +563,8 @@
         cell.textView.linkTextAttributes = @{ NSForegroundColorAttributeName : cell.textView.textColor,
                                               NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid) };
     }
+    
+    cell.timeLabel.text = [[msg date] jsq_stringFromDateWithFormat:@"HH:mm"];
     
     return cell;
 }

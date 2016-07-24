@@ -163,6 +163,8 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
     self.textView.dataDetectorTypes = UIDataDetectorTypeNone;
     self.textView.text = nil;
     self.textView.attributedText = nil;
+    
+    self.timeLabel.text = nil;
 
     self.avatarImageView.image = nil;
     self.avatarImageView.highlightedImage = nil;

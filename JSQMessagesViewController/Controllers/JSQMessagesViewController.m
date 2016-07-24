@@ -529,6 +529,20 @@ static void JSQInstallWorkaroundForSheetPresentationIssue26295020(void) {
         id<JSQMessageBubbleImageDataSource> bubbleImageDataSource = [collectionView.dataSource collectionView:collectionView messageBubbleImageDataForItemAtIndexPath:indexPath];
         cell.messageBubbleImageView.image = [bubbleImageDataSource messageBubbleImage];
         cell.messageBubbleImageView.highlightedImage = [bubbleImageDataSource messageBubbleHighlightedImage];
+        
+        CGFloat width = CGRectGetWidth(cell.textView.bounds);
+        CGFloat height = CGRectGetHeight(cell.textView.bounds);
+
+        CGFloat horizontalOffset = 5.0 + 10.0;
+        CGFloat verticalOffset = 5.0 + 7.0;
+        CGFloat pathWidth = CGRectGetWidth(cell.timeLabel.bounds);
+        CGFloat pathHeight = CGRectGetHeight(cell.timeLabel.bounds);
+        CGRect rect = CGRectMake(width - (pathWidth + horizontalOffset), height - (pathHeight + verticalOffset), width, pathHeight);
+        
+        UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:rect];
+        
+        cell.textView.textContainer.exclusionPaths = @[exclusionPath];
+        [collectionView reloadItemsAtIndexPaths:@[indexPath]];
     }
     else {
         id<JSQMessageMediaData> messageMedia = [messageItem media];
