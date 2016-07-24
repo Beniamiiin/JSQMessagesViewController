@@ -113,6 +113,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic, readonly, nullable) JSQMessagesLabel *cellBottomLabel;
 
 /**
+ *  Returns the label that is pinned to the right of the textview.
+ *  This label is most commonly used to display time message.
+ */
+@property (weak, nonatomic, readonly, nullable) JSQMessagesLabel *timeLabel;
+
+/**
  *  Returns the text view of the cell. This text view contains the message body text.
  *
  *  @warning If mediaView returns a non-nil view, then this value will be `nil`.
