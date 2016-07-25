@@ -42,19 +42,17 @@
                                  NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid) };
 }
 
-//- (void)layoutSubviews {
-//    [super layoutSubviews];
-//    
-//    NSLog(@"%@", self.text);
-//    
-//    CGFloat width = CGRectGetWidth(self.bounds);
-//    CGFloat height = CGRectGetHeight(self.bounds);
-//    CGRect rect = CGRectMake(width - (31.0 + 5.0 + 7.0), height - (14.0 + 7.0), 31.0, 14.0);
-//    UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:rect];
-//    self.textContainer.exclusionPaths = @[exclusionPath];
-//    
-//    [super layoutSubviews];
-//}
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    CGFloat width = CGRectGetWidth(self.bounds);
+    CGFloat height = CGRectGetHeight(self.bounds);
+    CGRect rect = CGRectMake(width - (31.0 + 5.0 + 7.0), height - (14.0 + 7.0), 31.0, 14.0);
+    UIBezierPath *exclusionPath = [UIBezierPath bezierPathWithRect:rect];
+    self.textContainer.exclusionPaths = @[exclusionPath];
+    
+    [super layoutSubviews];
+}
 
 - (void)setSelectedRange:(NSRange)selectedRange
 {
