@@ -17,6 +17,10 @@
 //
 
 #import "DemoMessagesViewController.h"
+#import "JSQMessagesViewAccessoryButtonDelegate.h"
+
+@interface DemoMessagesViewController () <JSQMessagesViewAccessoryButtonDelegate>
+@end
 
 #import "NSDate+JSQFormatting.h"
 
@@ -46,7 +50,12 @@
      */
     self.demoData = [[DemoModelData alloc] init];
     
-    
+
+    /**
+     *  Set up message accessory button delegate and configuration
+     */
+    self.collectionView.accessoryDelegate = self;
+
     /**
      *  You can set custom avatar sizes
      */
@@ -61,7 +70,7 @@
     self.showLoadEarlierMessagesHeader = YES;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage jsq_defaultTypingIndicatorImage]
-                                                                              style:UIBarButtonItemStyleBordered
+                                                                              style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(receiveMessagePressed:)];
 
@@ -124,6 +133,8 @@
      */
     UIMenuController *menu = [notification object];
     menu.menuItems = @[ [[UIMenuItem alloc] initWithTitle:@"Custom Action" action:@selector(customAction:)] ];
+    
+    [super didReceiveMenuWillShowNotification:notification];
 }
 
 
@@ -356,7 +367,7 @@
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                          destructiveButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"Send photo", nil), NSLocalizedString(@"Send location", nil), NSLocalizedString(@"Send video", nil), NSLocalizedString(@"Send audio", nil), nil];
+                                              otherButtonTitles:NSLocalizedString(@"Send photo", nil), NSLocalizedString(@"Send location", nil), NSLocalizedString(@"Send video", nil), NSLocalizedString(@"Send video thumbnail", nil), NSLocalizedString(@"Send audio", nil), nil];
     
     [sheet showFromToolbar:self.inputToolbar];
 }
@@ -388,6 +399,10 @@
             break;
             
         case 3:
+            [self.demoData addVideoMediaMessageWithThumbnail];
+            break;
+            
+        case 4:
             [self.demoData addAudioMediaMessage];
             break;
     }
@@ -563,12 +578,18 @@
         cell.textView.linkTextAttributes = @{ NSForegroundColorAttributeName : cell.textView.textColor,
                                               NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid) };
     }
+
+    cell.accessoryButton.hidden = ![self shouldShowAccessoryButtonForMessage:msg];
     
     cell.timeLabel.text = [[msg date] jsq_stringFromDateWithFormat:@"HH:mm"];
     
     return cell;
 }
 
+- (BOOL)shouldShowAccessoryButtonForMessage:(id<JSQMessageData>)message
+{
+    return ([message isMediaMessage] && [NSUserDefaults accessoryButtonForMediaMessages]);
+}
 
 
 #pragma mark - UICollectionView Delegate
@@ -684,7 +705,6 @@
 
 #pragma mark - JSQMessagesComposerTextViewPasteDelegate methods
 
-
 - (BOOL)composerTextView:(JSQMessagesComposerTextView *)textView shouldPasteWithSender:(id)sender
 {
     if ([UIPasteboard generalPasteboard].image) {
@@ -699,6 +719,13 @@
         return NO;
     }
     return YES;
+}
+
+#pragma mark - JSQMessagesViewAccessoryDelegate methods
+
+- (void)messageView:(JSQMessagesCollectionView *)view didTapAccessoryButtonAtIndexPath:(NSIndexPath *)path
+{
+    NSLog(@"Tapped accessory button!");
 }
 
 @end
