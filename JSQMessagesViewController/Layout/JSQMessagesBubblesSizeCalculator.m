@@ -24,7 +24,7 @@
 #import "JSQMessageData.h"
 
 #import "UIImage+JSQMessages.h"
-
+#import "NSDate+JSQFormatting.h"
 
 @interface JSQMessagesBubblesSizeCalculator ()
 
@@ -116,11 +116,22 @@
         CGFloat horizontalInsetsTotal = horizontalContainerInsets + horizontalFrameInsets + spacingBetweenAvatarAndBubble;
         CGFloat maximumTextWidth = [self textBubbleWidthForLayout:layout] - avatarSize.width - layout.messageBubbleLeftRightMargin - horizontalInsetsTotal;
 
-        CGRect stringRect = [[messageData text] boundingRectWithSize:CGSizeMake(maximumTextWidth, CGFLOAT_MAX)
-                                                             options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
-                                                          attributes:@{ NSFontAttributeName : layout.messageBubbleFont }
-                                                             context:nil];
-
+        NSString *messageText = [messageData text];
+        NSString *messageDate = [[messageData date] jsq_stringFromDateWithFormat:@"HH:mm"];;
+        NSString *fullMessage = [NSString stringWithFormat:@"%@%@", messageText, messageDate];
+        
+        NSMutableAttributedString *messageAttributedString = [[NSMutableAttributedString alloc] initWithString:fullMessage];
+        
+        NSRange fullMessageRange = NSMakeRange(0, fullMessage.length);
+        [messageAttributedString addAttribute:NSFontAttributeName value:layout.messageBubbleFont range:fullMessageRange];
+        
+        NSRange messageDateRange = NSMakeRange(messageText.length-1, messageDate.length);
+        [messageAttributedString addAttribute:NSFontAttributeName value:layout.messageTimeBubbleFont range:messageDateRange];
+        
+        CGRect stringRect = [messageAttributedString boundingRectWithSize:CGSizeMake(maximumTextWidth, CGFLOAT_MAX)
+                                                                   options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
+                                                                   context:nil];
+        
         CGSize stringSize = CGRectIntegral(stringRect).size;
 
         CGFloat verticalContainerInsets = layout.messageBubbleTextViewTextContainerInsets.top + layout.messageBubbleTextViewTextContainerInsets.bottom;

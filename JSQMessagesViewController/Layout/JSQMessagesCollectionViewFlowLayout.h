@@ -40,7 +40,7 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesCollectionViewCellLabelHeightDefault
  */
 FOUNDATION_EXPORT const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault;
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  The `JSQMessagesCollectionViewFlowLayout` is a concrete layout object that inherits 
@@ -103,6 +103,14 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault;
  *  @discussion The default value is the preferred system font for `UIFontTextStyleBody`. This value must not be `nil`.
  */
 @property (strong, nonatomic) UIFont *messageBubbleFont;
+
+/**
+ *  The font used to display the body a text time message in the message bubble of each
+ *  `JSQMessagesCollectionViewCell` in the collectionView.
+ *
+ *  @discussion The default value is the preferred system font for `UIFontTextStyleBody`. This value must not be `nil`.
+ */
+@property (strong, nonatomic) UIFont *messageTimeBubbleFont;
 
 /**
  *  The horizontal spacing used to lay out the `messageBubbleContainerView` frame within each `JSQMessagesCollectionViewCell`.
@@ -211,3 +219,5 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault;
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
+
+NS_ASSUME_NONNULL_END
